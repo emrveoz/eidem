@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DM Ürün → eBay Export</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+
+    <header class="header">
+      <div class="header-content">
+        <h1>🛒 DM Ürün → eBay Export Tool</h1>
+        <p class="subtitle">dm.de ürünlerini toplu çekin, (opsiyonel) AI ile optimize edin, Excel'e aktarın</p>
+
+        <div id="apiStatus" class="api-status">
+          <span class="status-dot"></span>
+          <span class="status-text">API kontrol ediliyor...</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+
+      <div class="input-section card">
+        <div class="section-header">
+          <h2>📝 Ürün URL'leri</h2>
+          <span class="hint">Her satıra bir dm.de ürün linki yapıştırın</span>
+        </div>
+
+        <div class="url-entry">
+          <input id="urlInput" type="text" placeholder="https://www.dm.de/produkt-1" />
+          <button id="addUrlBtn" class="btn btn-small btn-primary">➕ Ekle</button>
+        </div>
+
+        <textarea
+          id="urlList"
+          placeholder="https://www.dm.de/produkt-1
+https://www.dm.de/produkt-2"
+          rows="8"
+        ></textarea>
+
+        <div class="url-info">
+          <span id="urlCount" class="url-count">0 URL</span>
+          <button id="clearUrlsBtn" class="btn btn-small btn-secondary">🗑️ Temizle</button>
+        </div>
+
+        <div class="action-buttons">
+          <button id="fetchAllBtn" class="btn btn-primary btn-large" disabled>
+            <span class="btn-icon">⚡</span>
+            <span class="btn-text">Hepsini Çalıştır</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="progressSection" class="progress-section card hidden">
+        <div class="progress-header">
+          <h3 id="progressTitle">İşleniyor...</h3>
+          <span id="progressCount" class="progress-count">0/0</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <p id="progressMessage" class="progress-message">Hazırlanıyor...</p>
+      </div>
+
+      <div id="productsSection" class="products-section hidden">
+        <div class="section-header">
+          <h2>📦 İşlenen Ürünler</h2>
+
+          <div class="products-summary">
+            <span class="summary-item success">
+              <span class="dot"></span>
+              <span id="successCount">0</span> Başarılı
+            </span>
+            <span class="summary-item error">
+              <span class="dot"></span>
+              <span id="errorCount">0</span> Hata
+            </span>
+          </div>
+        </div>
+
+        <div class="table-toolbar">
+          <button id="toggleTableBtn" class="btn btn-small btn-secondary">⛶ Tam ekran tablo</button>
+          <div class="table-note">İpucu: Başlıklar sabit, sağa-sola kaydırabilirsiniz.</div>
+        </div>
+
+        <div id="productsTableWrapper" class="products-table-wrapper">
+          <table class="products-table">
+            <thead>
+              <tr id="productsTableHeader"></tr>
+            </thead>
+            <tbody id="productsTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="export-section card">
+          <h3>📊 Excel Export (eBay Template)</h3>
+
+          <button id="exportBtn" class="btn btn-success btn-large" disabled>
+            <span class="btn-icon">📥</span>
+            <span class="btn-text">Excel İndir (eBay Vorlage)</span>
+          </button>
+
+          <div class="export-info">
+            <p>✓ Başarılı ürünler export edilir</p>
+            <p>✓ Kolonlar sabit sırayla gelir (eBay Vorlage başlıkları)</p>
+            <p>✓ Görsel URL'leri | ile ayrılmış olur</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="productModal" class="modal hidden">
+        <div class="modal-overlay" onclick="closeProductModal()"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="modalTitle">Ürün Detayı</h3>
+            <button class="modal-close" onclick="closeProductModal()">&times;</button>
+          </div>
+          <div class="modal-body" id="modalBody"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+<!-- Ürün Önizleme Modal -->
+<div id="previewModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9999;">
+  <div style="background:#fff; width:min(980px, 94vw); height:min(720px, 90vh); margin:5vh auto; border-radius:14px; overflow:hidden; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid #eee;">
+      <div id="previewTitle" style="font-weight:700;">Ürün Önizleme</div>
+      <button onclick="closePreview()" style="border:0; background:#eee; padding:8px 10px; border-radius:10px; cursor:pointer;">Kapat</button>
+    </div>
+
+    <div id="previewBody" style="padding:14px; overflow:auto;">
+      <!-- JS dolduracak -->
+    </div>
+  </div>
+</div>
+</body>
+</html>
