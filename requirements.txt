@@ -1,0 +1,10 @@
+flask
+flask-cors
+selenium
+webdriver-manager
+beautifulsoup4
+requests
+python-dotenv
+openpyxl
+pywebview
+pyinstaller
